@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rickandmorty/app/router.dart';
+import 'package:rickandmorty/views/screens/characters_view/characters_viewmodel.dart';
 import 'package:rickandmorty/views/widgets/character_card_widget.dart';
 
 class CharactersView extends StatefulWidget {
@@ -12,6 +15,12 @@ class CharactersView extends StatefulWidget {
 
 class _CharactersViewState extends State<CharactersView> {
   @override
+  void initState() {
+    super.initState();
+    context.read<CharactersViewModel>().getCharacters();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -20,30 +29,24 @@ class _CharactersViewState extends State<CharactersView> {
           child: Column(
             children: [
               _searchInputWidget(context),
-              CharacterCardWidget(
-                name: 'Rick Sanchez',
-                origin: 'Earth (C-137)',
-                image:
-                    'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-                status: 'Yaşıyor',
-                type: 'İnsan',
-              ),
-              CharacterCardWidget(
-                name: 'Rick Sanchez',
-                origin: 'Earth (C-137)',
-                image:
-                    'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-                status: 'Yaşıyor',
-                type: 'İnsan',
-              ),
-              CharacterCardWidget(
-                name: 'Rick Sanchez',
-                origin: 'Earth (C-137)',
-                image:
-                    'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-                status: 'Yaşıyor',
-                type: 'İnsan',
-              ),
+              Consumer<CharactersViewModel>(builder: (context, ref, child) {
+                if (ref.charactersModel == null) {
+                  return CircularProgressIndicator.adaptive();
+                } else {
+                  return Flexible(
+                    child: ListView.builder(
+                      itemCount: ref.charactersModel!.characters.length,
+                      itemBuilder: (context, index) {
+                        final charactersIndex =
+                            ref.charactersModel!.characters[index];
+                        return CharacterCardWidget(
+                          characterModel: charactersIndex,
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
             ],
           ),
         ),

@@ -16,8 +16,8 @@ class CharactersModel {
 }
 
 class CharacterInfo {
-  final String count;
-  final String pages;
+  final int count;
+  final int pages;
   final String? next;
   final String? prev;
 
@@ -35,7 +35,7 @@ class CharacterInfo {
 }
 
 class CharacterModel {
-  final String id;
+  final int id;
   final String name;
   final String status;
   final String species;

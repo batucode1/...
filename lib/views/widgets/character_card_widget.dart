@@ -1,20 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/models/characters_model.dart';
 
 class CharacterCardWidget extends StatelessWidget {
-  final String name;
-  final String image;
-  final String origin;
-  final String status;
-  final String type;
-  const CharacterCardWidget(
-      {super.key,
-      required this.name,
-      required this.image,
-      required this.origin,
-      required this.status,
-      required this.type});
+  final CharacterModel characterModel;
+  const CharacterCardWidget({
+    super.key,
+    required this.characterModel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +25,7 @@ class CharacterCardWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(6), // Radius for photo
               child: Image.network(
-                image,
+                characterModel.image,
                 width: 100,
                 height: 100,
               ),
@@ -41,13 +35,16 @@ class CharacterCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
+                  characterModel.name,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: 5),
-                _infoWidget(type: "Köken", value: origin),
+                _infoWidget(type: "Köken", value: characterModel.location.name),
                 SizedBox(height: 3),
-                _infoWidget(type: "Durum", value: status),
+                _infoWidget(
+                    type: "Durum",
+                    value:
+                        '${characterModel.status} - ${characterModel.species}'),
               ],
             )
           ],

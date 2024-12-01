@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rickandmorty/views/screens/characters_view/characters.dart';
+import 'package:provider/provider.dart';
+import 'package:rickandmorty/views/screens/characters_view/characters_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_view.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
+import '../views/screens/characters_view/characters_viewmodel.dart';
 import '../views/app_view.dart';
 import '../views/screens/favourites_view/favourites_view.dart';
 
@@ -31,7 +33,9 @@ final router = GoRouter(
             routes: [
               GoRoute(
                 path: AppRoutes.characters,
-                builder: (context, state) => CharactersView(),
+                builder: (context, state) => ChangeNotifierProvider(
+                    create: (context) => CharactersViewModel(),
+                    child: CharactersView()),
               ),
             ],
           ),
