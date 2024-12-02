@@ -14,41 +14,52 @@ class CharacterCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 7),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6), // Radius for photo
-              child: Image.network(
-                characterModel.image,
-                width: 100,
-                height: 100,
-              ),
+      child: Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(6),
             ),
-            SizedBox(width: 17),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  characterModel.name,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6), // Radius for photo
+                  child: Image.network(
+                    characterModel.image,
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
-                SizedBox(height: 5),
-                _infoWidget(type: "Köken", value: characterModel.location.name),
-                SizedBox(height: 3),
-                _infoWidget(
-                    type: "Durum",
-                    value:
-                        '${characterModel.status} - ${characterModel.species}'),
+                SizedBox(width: 17),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      characterModel.name,
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(height: 5),
+                    _infoWidget(
+                        type: "Köken", value: characterModel.location.name),
+                    SizedBox(height: 3),
+                    _infoWidget(
+                        type: "Durum",
+                        value:
+                            '${characterModel.status} - ${characterModel.species}'),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.bookmark_outline),
+          )
+        ],
       ),
     );
   }
