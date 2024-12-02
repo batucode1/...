@@ -4,8 +4,10 @@ import 'package:rickandmorty/app/router.dart';
 import 'app/getit.dart';
 import 'app/theme.dart';
 
-void main() {
-  setupLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await setupLocator();
   runApp(const MyApp());
 }
 

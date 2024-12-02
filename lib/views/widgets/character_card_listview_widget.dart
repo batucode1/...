@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/app/getit.dart';
 import 'package:rickandmorty/models/characters_model.dart';
+import 'package:rickandmorty/services/preferences_service.dart';
 
 import 'character_card_widget.dart';
 
@@ -21,11 +23,25 @@ class CharacterCardListViewWidget extends StatefulWidget {
 class _CharacterCardListViewWidgetState
     extends State<CharacterCardListViewWidget> {
   final scroller = ScrollController();
+  bool isLoading = true;
+  List<int> _favoritedList = [];
 
   @override
   void initState() {
+    getFavList();
     dedectScrollBottom();
     super.initState();
+  }
+
+  void setLoading(bool value) {
+    isLoading = value;
+    setState(() {});
+  }
+
+  void getFavList() {
+    _favoritedList = locator<PreferencesService>().getSavedCharacters();
+    setLoading(false);
+    setState(() {});
   }
 
   void dedectScrollBottom() {
@@ -46,9 +62,9 @@ class _CharacterCardListViewWidgetState
         itemCount: widget.characters.length,
         itemBuilder: (context, index) {
           final charactersIndex = widget.characters[index];
+          final bool isFav = _favoritedList.contains(charactersIndex.id);
           return CharacterCardWidget(
-            characterModel: charactersIndex,
-          );
+              characterModel: charactersIndex, isFavorited: isFav);
         },
       ),
     );

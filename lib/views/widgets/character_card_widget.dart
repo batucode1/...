@@ -1,14 +1,36 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/app/getit.dart';
 import 'package:rickandmorty/models/characters_model.dart';
 
-class CharacterCardWidget extends StatelessWidget {
+import '../../services/preferences_service.dart';
+
+class CharacterCardWidget extends StatefulWidget {
+  bool isFavorited;
   final CharacterModel characterModel;
-  const CharacterCardWidget({
+  CharacterCardWidget({
     super.key,
     required this.characterModel,
+    required this.isFavorited,
   });
+
+  @override
+  State<CharacterCardWidget> createState() => _CharacterCardWidgetState();
+}
+
+class _CharacterCardWidgetState extends State<CharacterCardWidget> {
+  void _favoriteCharacter() {
+    if (widget.isFavorited) {
+      locator<PreferencesService>().removeCharacters(widget.characterModel.id);
+      widget.isFavorited = false;
+    } else {
+      locator<PreferencesService>().saveCharacters(widget.characterModel.id);
+      widget.isFavorited = true;
+    }
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +50,7 @@ class CharacterCardWidget extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6), // Radius for photo
                   child: Image.network(
-                    characterModel.image,
+                    widget.characterModel.image,
                     width: 100,
                     height: 100,
                   ),
@@ -38,26 +60,28 @@ class CharacterCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      characterModel.name,
+                      widget.characterModel.name,
                       style:
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 5),
                     _infoWidget(
-                        type: "Köken", value: characterModel.location.name),
+                        type: "Köken",
+                        value: widget.characterModel.location.name),
                     SizedBox(height: 3),
                     _infoWidget(
                         type: "Durum",
                         value:
-                            '${characterModel.status} - ${characterModel.species}'),
+                            '${widget.characterModel.status} - ${widget.characterModel.species}'),
                   ],
                 )
               ],
             ),
           ),
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.bookmark_outline),
+            onPressed: _favoriteCharacter,
+            icon: Icon(
+                widget.isFavorited ? Icons.bookmark : Icons.bookmark_border),
           )
         ],
       ),
