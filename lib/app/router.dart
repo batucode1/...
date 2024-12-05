@@ -7,6 +7,7 @@ import 'package:rickandmorty/views/screens/section_view/section_view.dart';
 import '../views/screens/characters_view/characters_viewmodel.dart';
 import '../views/app_view.dart';
 import '../views/screens/favourites_view/favourites_view.dart';
+import '../views/screens/favourites_view/favourites_viewmodel.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -35,7 +36,7 @@ final router = GoRouter(
                 path: AppRoutes.characters,
                 builder: (context, state) => ChangeNotifierProvider(
                     create: (context) => CharactersViewModel(),
-                    child: CharactersView()),
+                    child: const CharactersView()),
               ),
             ],
           ),
@@ -43,7 +44,10 @@ final router = GoRouter(
             routes: [
               GoRoute(
                 path: AppRoutes.favourites,
-                builder: (context, state) => FavouritesView(),
+                builder: (context, state) => ChangeNotifierProvider(
+                  create: (context) => FavouritesViewmodel(),
+                  child: const FavouritesView(),
+                ),
               ),
             ],
           ),

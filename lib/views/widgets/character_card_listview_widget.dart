@@ -10,10 +10,10 @@ import 'character_card_widget.dart';
 class CharacterCardListViewWidget extends StatefulWidget {
   final List<CharacterModel>
       characters; //liste itemlerini dışarıdan alıp bağımsız bir widget oluşturacagız
-  final VoidCallback onLoadMore;
+  final VoidCallback? onLoadMore;
 
   CharacterCardListViewWidget(
-      {super.key, required this.characters, required this.onLoadMore});
+      {super.key, required this.characters, this.onLoadMore});
 
   @override
   State<CharacterCardListViewWidget> createState() =>
@@ -45,13 +45,15 @@ class _CharacterCardListViewWidgetState
   }
 
   void dedectScrollBottom() {
-    scroller.addListener(() {
-      final maxScroll = scroller.position.maxScrollExtent;
-      final currentScroll = scroller.position.pixels;
-      if (maxScroll - currentScroll <= 200) {
-        widget.onLoadMore();
-      }
-    });
+    if (widget.onLoadMore != null) {
+      scroller.addListener(() {
+        final maxScroll = scroller.position.maxScrollExtent;
+        final currentScroll = scroller.position.pixels;
+        if (maxScroll - currentScroll <= 200) {
+          widget.onLoadMore!();
+        }
+      });
+    }
   }
 
   @override
