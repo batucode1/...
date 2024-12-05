@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rickandmorty/views/widgets/appbar_widget.dart';
 
 class AppView extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -8,7 +9,6 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBarWidget(),
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           labelTextStyle: WidgetStateTextStyle.resolveWith((state) {
@@ -66,15 +66,5 @@ class AppView extends StatelessWidget {
               : Theme.of(context).colorScheme.tertiary,
         ),
         label: label);
-  }
-
-  AppBar _appBarWidget() {
-    return AppBar(
-      title: const Text(
-        'Rick and Morty',
-        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-      ),
-      actions: [],
-    );
   }
 }

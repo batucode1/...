@@ -6,6 +6,7 @@ import 'package:rickandmorty/views/screens/location_view/location_view.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
 import '../models/characters_model.dart';
 import '../views/screens/character_profile_view/character_profile_view.dart';
+import '../views/screens/character_profile_view/character_profile_viewmodel.dart';
 import '../views/screens/characters_view/characters_viewmodel.dart';
 import '../views/app_view.dart';
 import '../views/screens/favourites_view/favourites_view.dart';
@@ -47,8 +48,11 @@ final router = GoRouter(
                 routes: [
                   GoRoute(
                     path: AppRoutes.profileRoute,
-                    builder: (context, state) => CharacterProfileView(
-                        characterModel: state.extra as CharacterModel),
+                    builder: (context, state) => ChangeNotifierProvider(
+                      create: (context) => CharacterProfileViewmodel(),
+                      child: CharacterProfileView(
+                          characterModel: state.extra as CharacterModel),
+                    ),
                   ),
                 ],
               ),
