@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:rickandmorty/views/screens/characters_view/characters_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_view.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
+import '../models/characters_model.dart';
+import '../views/screens/character_profile_view/character_profile_view.dart';
 import '../views/screens/characters_view/characters_viewmodel.dart';
 import '../views/app_view.dart';
 import '../views/screens/favourites_view/favourites_view.dart';
@@ -18,6 +20,10 @@ class AppRoutes {
   static const String locations = '/locations';
   static const String favourites = '/favourites';
   static const String sections = '/sections';
+  //sub routes
+  static const String profileRoute = 'characterProfile';
+  //sub routes
+  static const String characterProfile = '/characterProfile';
 }
 
 final router = GoRouter(
@@ -35,8 +41,16 @@ final router = GoRouter(
               GoRoute(
                 path: AppRoutes.characters,
                 builder: (context, state) => ChangeNotifierProvider(
-                    create: (context) => CharactersViewModel(),
-                    child: const CharactersView()),
+                  create: (context) => CharactersViewModel(),
+                  child: const CharactersView(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.profileRoute,
+                    builder: (context, state) => CharacterProfileView(
+                        characterModel: state.extra as CharacterModel),
+                  ),
+                ],
               ),
             ],
           ),
