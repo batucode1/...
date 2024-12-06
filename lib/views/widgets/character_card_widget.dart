@@ -54,10 +54,13 @@ class _CharacterCardWidgetState extends State<CharacterCardWidget> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6), // Radius for photo
-                    child: Image.network(
-                      widget.characterModel.image,
-                      width: 100,
-                      height: 100,
+                    child: Hero(
+                      tag: widget.characterModel.image,
+                      child: Image.network(
+                        widget.characterModel.image,
+                        width: 100,
+                        height: 100,
+                      ),
                     ),
                   ),
                   SizedBox(width: 17),

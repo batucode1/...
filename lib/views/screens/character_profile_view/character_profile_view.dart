@@ -80,15 +80,20 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
     return Flexible(
       child: Consumer<CharacterProfileViewmodel>(
         builder: (context, viewModel, child) => ListView.separated(
+          padding: EdgeInsets.zero,
           separatorBuilder: (context, index) => Divider(
               endIndent: 40,
+              height: 0,
               indent: 40,
               color: Theme.of(context).colorScheme.tertiary),
           itemCount: viewModel.episodes.length,
           itemBuilder: (context, index) {
             final EpisodesModel model = viewModel.episodes[index];
             return ListTile(
-              leading: Icon(Icons.face_retouching_natural),
+              leading: Icon(
+                Icons.face_retouching_natural,
+                size: 35,
+              ),
               title: Text(
                 model.episode,
                 style: TextStyle(fontWeight: FontWeight.w500),
@@ -154,9 +159,12 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
         child: CircleAvatar(
           radius: 98,
           backgroundColor: Theme.of(context).colorScheme.surface,
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(widget.characterModel.image),
-            radius: 95,
+          child: Hero(
+            tag: widget.characterModel.image,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.characterModel.image),
+              radius: 95,
+            ),
           ),
         ),
       ),

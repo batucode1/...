@@ -27,13 +27,13 @@ class EpisodesModel {
   }
 
   factory EpisodesModel.fromMap(Map<String, dynamic> map) {
-    final episodeString = map['characters'] as String;
+    final episodeString = map['episode'] as String;
     final episodeList = episodeString.replaceAll('S', '').split('E');
     return EpisodesModel(
       id: map['id'] as int,
       name: map['name'] as String,
       episode:
-          'Bölüm ${int.parse(episodeList.first)} Sezon ${episodeList.last}',
+          'Sezon ${int.parse(episodeList.first)} Bölüm ${episodeList.last}',
       characters: List<String>.from(
         (map['characters'] as List),
       ),
