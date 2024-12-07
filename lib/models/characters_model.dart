@@ -1,5 +1,7 @@
+import 'package:rickandmorty/models/info_model.dart';
+
 class CharactersModel {
-  CharacterInfo info;
+  InfoModel info;
   final List<CharacterModel> characters;
   CharactersModel(
       {required this.info, required this.characters}); //I combined other models
@@ -7,7 +9,7 @@ class CharactersModel {
   factory CharactersModel.fromJson(
       Map<String, dynamic> json) //if constructor return itself . it's factory
   {
-    final info = CharacterInfo.fromJson(json['info']);
+    final info = InfoModel.fromMap(json['info']);
     final characters = (json['results'] as List)
         .map((char) => CharacterModel.fromJson(char))
         .toList();

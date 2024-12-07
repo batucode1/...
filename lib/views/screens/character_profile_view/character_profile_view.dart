@@ -6,6 +6,7 @@ import 'package:rickandmorty/models/characters_model.dart';
 import 'package:rickandmorty/models/episodes_model.dart';
 import 'package:rickandmorty/views/widgets/appbar_widget.dart';
 
+import '../../widgets/decoration_container_widget.dart';
 import 'character_profile_viewmodel.dart';
 
 class CharacterProfileView extends StatefulWidget {
@@ -34,24 +35,9 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
           title: "Karakter Profili",
           transparent: true,
         ),
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/bg-image.png'),
-                  alignment: Alignment.topCenter,
-                  fit: BoxFit.fitWidth)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _characterAvatar(context),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(50)),
-                  ),
-                  child: Column(
+        body: DecorationContainer(
+          topChild: _characterAvatar(context),
+          child:Column(
                     children: [
                       SizedBox(height: 15),
                       Text(
@@ -67,11 +53,7 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
                       _episodeListview(),
                     ],
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
+             ),
       ),
     );
   }

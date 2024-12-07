@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:rickandmorty/models/characters_model.dart';
 import 'package:rickandmorty/models/episodes_model.dart';
-import 'dart:developer'; // Debugging için
+import 'dart:developer';
+
+import 'package:rickandmorty/models/location_model.dart'; // Debugging için
 
 class ApiServices {
   final _dio = Dio(
@@ -52,6 +54,15 @@ class ApiServices {
       }
     } catch (e, stacktrace) {
       throw Exception(e.toString());
+    }
+  }
+
+  Future<LocationModel> getAllLocations({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/location');
+      return LocationModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
     }
   }
 }

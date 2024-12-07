@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rickandmorty/views/screens/characters_view/characters_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_view.dart';
+import 'package:rickandmorty/views/screens/location_view/location_viewmodel.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
 import '../models/characters_model.dart';
 import '../views/screens/character_profile_view/character_profile_view.dart';
@@ -73,7 +74,9 @@ final router = GoRouter(
             routes: [
               GoRoute(
                 path: AppRoutes.locations,
-                builder: (context, state) => LocationView(),
+                builder: (context, state) => ChangeNotifierProvider(
+                    create: (context) => LocationViewmodel(),
+                    child: const LocationView()),
               ),
             ],
           ),
