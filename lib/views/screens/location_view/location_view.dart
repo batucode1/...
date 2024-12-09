@@ -28,7 +28,7 @@ class _LocationViewState extends State<LocationView> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: const AppbarWidget(
-          title: "Location",
+          title: "Location ",
           transparent: true,
         ),
         body: Center(
