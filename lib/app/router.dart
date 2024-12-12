@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:rickandmorty/models/location_model.dart';
 import 'package:rickandmorty/views/screens/characters_view/characters_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_viewmodel.dart';
+import 'package:rickandmorty/views/screens/residents_view/resident_view.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
 import '../models/characters_model.dart';
 import '../views/screens/character_profile_view/character_profile_view.dart';
@@ -26,6 +28,9 @@ class AppRoutes {
   static const String profileRoute = 'characterProfile';
   //sub routes
   static const String characterProfile = '/characterProfile';
+
+  static const String residentRoute = 'residents';
+  static const String residents = '/locations/residents';
 }
 
 final router = GoRouter(
@@ -77,6 +82,13 @@ final router = GoRouter(
                 builder: (context, state) => ChangeNotifierProvider(
                     create: (context) => LocationViewmodel(),
                     child: const LocationView()),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.residentRoute,
+                    builder: (context, state) =>
+                        ResidentView(locationItem: state.extra as LocationItem),
+                  ),
+                ],
               ),
             ],
           ),
