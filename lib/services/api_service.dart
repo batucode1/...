@@ -31,13 +31,23 @@ class ApiServices {
           .map((e) => CharacterModel.fromJson(e))
           .toList();
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception(e);
     }
   }
 
-  Future<List<EpisodesModel>> getMultipleEpisodes(List<String> list) async {
+  Future<AllEpisodesModel> getAllEpisodes({ String? url}) async {
     try {
-      List<String> episodeNumber = list.map((e) => e.split('/').last).toList();
+      final response = await _dio.get(url ?? '/episode');
+      //log(response.data.toString());
+      return AllEpisodesModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<EpisodesModel>> getMultipleEpisodes(List list) async {
+    try {
+      List episodeNumber = list.map((e) => e.split('/').last).toList();
       String episodes = episodeNumber.join(',');
       if (list.length == 1) episodes = '$episodeNumber,';
       final response = await _dio.get('/episode/${episodeNumber.join(',')}');
@@ -61,6 +71,23 @@ class ApiServices {
     try {
       final response = await _dio.get(url ?? '/location');
       return LocationModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CharacterModel>> getCharactersFromUrlList(List<String> residentsUrl) async {
+    final List<int> idList = residentsUrl.map((e) {
+      final lastSegment = e.split('/').last;
+      // Null veya boş string durumunu kontrol et
+      if (lastSegment.isEmpty) {
+        throw Exception("Invalid URL format: $e");
+      }
+      return int.tryParse(lastSegment) ??
+          (throw Exception("Invalid ID in URL: $e"));
+    }).toList();
+    try {
+      return await getMultipleCharacters(idList);
     } catch (e) {
       rethrow;
     }

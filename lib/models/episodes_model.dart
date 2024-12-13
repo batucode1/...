@@ -1,6 +1,39 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:rickandmorty/models/info_model.dart';
+
+class AllEpisodesModel {
+  InfoModel info;
+  List<EpisodesModel> episodes;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'info': info.toMap(),
+      'episode': episodes.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory AllEpisodesModel.fromMap(Map<String, dynamic> map) {
+    return AllEpisodesModel(
+      info: InfoModel.fromMap(map['info'] as Map<String, dynamic>),
+      // 'results' alanını kullan
+      episodes: List<EpisodesModel>.from(
+        (map['results'] as List).map<EpisodesModel>(
+          (x) => EpisodesModel.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AllEpisodesModel.fromJson(String source) =>
+      AllEpisodesModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AllEpisodesModel({required this.info, required this.episodes});
+}
+
 class EpisodesModel {
   final int id;
   final String name;

@@ -3,8 +3,12 @@ import 'package:rickandmorty/app/getit.dart';
 import '../../../services/api_service.dart';
 import '../../../models/characters_model.dart';
 
+enum CharacterType { all, alive, dead, unknown }
+
 class CharactersViewModel extends ChangeNotifier {
   final _apiServices = locator<ApiServices>();
+
+  CharacterType characterType = CharacterType.all;
 
   CharactersModel? charactersModel;
   CharactersModel? get characters => charactersModel;
@@ -43,6 +47,16 @@ class CharactersViewModel extends ChangeNotifier {
     charactersClear();
     charactersModel = await _apiServices.getCharacters(args: {'name': name});
     notifyListeners();
-    print('geldi');
+  }
+
+  void getCharactersByStatus(CharacterType status) async {
+    characterType = status;
+    charactersClear();
+    Map<String, dynamic>? args = {};
+    if (status != CharacterType.all) {
+      args = {'status': status.name};
+    }
+    charactersModel = await _apiServices.getCharacters(args: args);
+    notifyListeners();
   }
 }

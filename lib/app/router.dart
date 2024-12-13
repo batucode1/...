@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:rickandmorty/models/episodes_model.dart';
 import 'package:rickandmorty/models/location_model.dart';
 import 'package:rickandmorty/views/screens/characters_view/characters_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_view.dart';
 import 'package:rickandmorty/views/screens/location_view/location_viewmodel.dart';
 import 'package:rickandmorty/views/screens/residents_view/resident_view.dart';
+import 'package:rickandmorty/views/screens/residents_view/resident_viewmodel.dart';
+import 'package:rickandmorty/views/screens/section_character_view/section_character_viewmodel.dart';
 import 'package:rickandmorty/views/screens/section_view/section_view.dart';
 import '../models/characters_model.dart';
 import '../views/screens/character_profile_view/character_profile_view.dart';
@@ -14,6 +17,10 @@ import '../views/screens/characters_view/characters_viewmodel.dart';
 import '../views/app_view.dart';
 import '../views/screens/favourites_view/favourites_view.dart';
 import '../views/screens/favourites_view/favourites_viewmodel.dart';
+import '../views/screens/section_character_view/section_character_view.dart';
+import '../views/screens/section_view/section_viewmodel.dart';
+import '../views/screens/settings_view/setting_view.dart';
+import '../views/screens/settings_view/setting_viewmodel.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -31,6 +38,11 @@ class AppRoutes {
 
   static const String residentRoute = 'residents';
   static const String residents = '/locations/residents';
+
+  static const String sectionCharacterRoute = 'characters';
+  static const String sectionCharacter = '/sections/characters';
+
+  static const String settings = '/setting';
 }
 
 final router = GoRouter(
@@ -84,10 +96,12 @@ final router = GoRouter(
                     child: const LocationView()),
                 routes: [
                   GoRoute(
-                    path: AppRoutes.residentRoute,
-                    builder: (context, state) =>
-                        ResidentView(locationItem: state.extra as LocationItem),
-                  ),
+                      path: AppRoutes.residentRoute,
+                      builder: (context, state) => ChangeNotifierProvider(
+                            create: (context) => ResidentViewmodel(),
+                            child: ResidentView(
+                                locationItem: state.extra as LocationItem),
+                          )),
                 ],
               ),
             ],
@@ -96,10 +110,31 @@ final router = GoRouter(
             routes: [
               GoRoute(
                 path: AppRoutes.sections,
-                builder: (context, state) => SectionView(),
+                builder: (context, state) => ChangeNotifierProvider(
+                  create: (context) => SectionViewmodel(),
+                  child: const SectionView(),
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.sectionCharacterRoute,
+                    builder: (context, state) => ChangeNotifierProvider(
+                      create: (context) => SectionCharacterViewmodel(),
+                      child: SectionCharacterView(
+                        locationItem: state.extra as EpisodesModel,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) => SettingViewmodel(),
+          child: const SettingView(),
+        ),
       ),
     ]);

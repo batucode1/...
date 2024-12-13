@@ -18,6 +18,7 @@ class _FavouritesViewState extends State<FavouritesView> {
   void initState() {
     super.initState();
     context.read<FavouritesViewmodel>().getFavourites();
+    
   }
 
   @override
@@ -26,6 +27,7 @@ class _FavouritesViewState extends State<FavouritesView> {
     final viewModel = context.watch<FavouritesViewmodel>();
     return Scaffold(
       appBar: AppbarWidget(
+        
         title: "Favoriler",
       ),
       body: Padding(

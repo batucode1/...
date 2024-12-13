@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rickandmorty/models/characters_model.dart';
 import 'package:rickandmorty/models/episodes_model.dart';
 import 'package:rickandmorty/views/widgets/appbar_widget.dart';
 
+import '../../../app/router.dart';
 import '../../widgets/decoration_container_widget.dart';
 import 'character_profile_viewmodel.dart';
 
@@ -37,23 +39,22 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
         ),
         body: DecorationContainer(
           topChild: _characterAvatar(context),
-          child:Column(
-                    children: [
-                      SizedBox(height: 15),
-                      Text(
-                        widget.characterModel.name,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: 15),
-                      _labelsView(context),
-                      SizedBox(height: 40),
-                      _episodeTitle(),
-                      SizedBox(height: 15),
-                      _episodeListview(),
-                    ],
-                  ),
-             ),
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              Text(
+                widget.characterModel.name,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: 15),
+              _labelsView(context),
+              SizedBox(height: 40),
+              _episodeTitle(),
+              SizedBox(height: 15),
+              _episodeListview(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -61,32 +62,36 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
   Widget _episodeListview() {
     return Flexible(
       child: Consumer<CharacterProfileViewmodel>(
-        builder: (context, viewModel, child) => ListView.separated(
-          padding: EdgeInsets.zero,
-          separatorBuilder: (context, index) => Divider(
-              endIndent: 40,
-              height: 0,
-              indent: 40,
-              color: Theme.of(context).colorScheme.tertiary),
-          itemCount: viewModel.episodes.length,
-          itemBuilder: (context, index) {
-            final EpisodesModel model = viewModel.episodes[index];
-            return ListTile(
-              leading: Icon(
-                Icons.face_retouching_natural,
-                size: 35,
-              ),
-              title: Text(
-                model.episode,
-                style: TextStyle(fontWeight: FontWeight.w500),
-              ),
-              subtitle: Text(
-                model.name,
-                style: TextStyle(fontSize: 12),
-              ),
-            );
-          },
-        ),
+        builder: (context, viewModel, child) {
+          return ListView.separated(
+            padding: EdgeInsets.zero,
+            separatorBuilder: (context, index) => Divider(
+                endIndent: 40,
+                height: 0,
+                indent: 40,
+                color: Theme.of(context).colorScheme.tertiary),
+            itemCount: viewModel.episodes.length,
+            itemBuilder: (context, index) {
+              final EpisodesModel model = viewModel.episodes[index];
+              return ListTile(
+                onTap: () =>
+                    context.push(AppRoutes.sectionCharacter, extra: model),
+                leading: Icon(
+                  Icons.face_retouching_natural,
+                  size: 35,
+                ),
+                title: Text(
+                  model.episode,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                subtitle: Text(
+                  model.name,
+                  style: TextStyle(fontSize: 12),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

@@ -39,59 +39,64 @@ class _CharacterCardWidgetState extends State<CharacterCardWidget> {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.characterProfile,
           extra: widget.characterModel),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7),
-        child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6), // Radius for photo
-                    child: Hero(
-                      tag: widget.characterModel.image,
-                      child: Image.network(
-                        widget.characterModel.image,
-                        width: 100,
-                        height: 100,
+      child: Flexible(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 7),
+          child: Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(6), // Radius for photo
+                      child: Hero(
+                        tag: widget.characterModel.image,
+                        child: Image.network(
+                          widget.characterModel.image,
+                          width: 100,
+                          height: 100,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 17),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.characterModel.name,
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(height: 5),
-                      _infoWidget(
-                          type: "Köken",
-                          value: widget.characterModel.location.name),
-                      SizedBox(height: 3),
-                      _infoWidget(
-                          type: "Durum",
-                          value:
-                              '${widget.characterModel.status} - ${widget.characterModel.species}'),
-                    ],
-                  )
-                ],
+                    SizedBox(width: 17),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.characterModel.name,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(height: 5),
+                        _infoWidget(
+                            type: "Köken",
+                            value: widget.characterModel.location.name),
+                        SizedBox(height: 3),
+                        _infoWidget(
+                            type: "Durum",
+                            value:
+                                '${widget.characterModel.status} - ${widget.characterModel.species}'),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            IconButton(
-              onPressed: _favoriteCharacter,
-              icon: Icon(
-                  widget.isFavorited ? Icons.bookmark : Icons.bookmark_border),
-            )
-          ],
+              IconButton(
+                onPressed: _favoriteCharacter,
+                icon: Icon(widget.isFavorited
+                    ? Icons.bookmark
+                    : Icons.bookmark_border),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -101,8 +106,15 @@ class _CharacterCardWidgetState extends State<CharacterCardWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(type),
-        Text(value),
+        Text(
+          type,
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+        ),
+        Text(
+          value,
+          overflow: TextOverflow.fade,
+        ),
       ],
     );
   }

@@ -58,7 +58,21 @@ class _CharactersViewState extends State<CharactersView> {
           labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           border: OutlineInputBorder(),
           prefixIcon: Icon(Icons.search),
-          suffixIcon: Icon(Icons.more_vert),
+          suffixIcon: PopupMenuButton(
+            onSelected:
+                context.read<CharactersViewModel>().getCharactersByStatus,
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (context) {
+              return CharacterType.values
+                  .map(
+                    (e) => PopupMenuItem(
+                      value: e,
+                      child: Text(e.name),
+                    ),
+                  )
+                  .toList();
+            },
+          ),
         ),
       ),
     );
